@@ -1,56 +1,107 @@
 # Sistema de Gestión de Artefactos Mágicos de Instanciaveria
 
-* Actividad: Laboratorio 2 - POO 2025 (11[02]76)
-* Tipo de trabajo: Laboratorio en clase
-* Fecha: 14-10-2025
-* Duración: de 18 a 21.
-* Entregable: Si.
+* **Actividad:** Laboratorio 2 - POO 2026 (11[02]76)
+* * **Tema:** Inversión de Control (IoC), Inyección de Dependencias (DI) y Polimorfismo
+* **Modalidad:** Taller presencial en parejas (Pair Programming con rotación de roles)
+* **Fecha:** 20-10-2026
+* **Duración:** de 18 a 21.
+* **Entregable:** Pull Request al repositorio oficial antes de las 21:00 hs
 
-# Grupo
+---
 
-- Estudiante 1 (Legajo 1) - cor...@estudiante1.com
-- Estudiante 2 (Legajo 2) - cor...@estudiante2.com
+# Integrantes del Grupo
+
+- Estudiante 1 (Legajo 1)
+- Estudiante 2 (Legajo 2)
+
+---
 
 # Contexto / Escenario
 
-¡El Torneo de los Tres Reinos es inminente! La Academia de Hechicería Arcana ha reunido a un concilio de los más grandes artesanos para potenciar su arsenal. Un maestro **Herrero Enano** aplicará su magia rúnica a las _varitas_, y un delicado **Artesano Élfico** es especialista en encantar _amuletos_. Además, un sabio **Escriba Arcano** ha sido convocado para re-inscribir los _pergaminos_ de poder, aunque su magia es volátil y arriesgada. Finalmente, un **Alquimista Experto** está 
-destilando pociones para fortalecer a los campeones, asegurándose de que no excedan los límites mortales.
+¡El Torneo de los Tres Reinos es inminente! La Academia de Hechicería Arcana ha reunido a un concilio 
+de los más grandes artesanos para potenciar su arsenal. Un maestro **Herrero Enano** aplicará su magia 
+rúnica a las _varitas_, y un delicado **Artesano Élfico** es especialista en encantar _amuletos_. Además, 
+un sabio **Escriba Arcano** ha sido convocado para re-inscribir los _pergaminos_ de poder, aunque su magia 
+es volátil y arriesgada. Finalmente, un **Alquimista Experto** está destilando pociones para fortalecer a 
+los campeones, asegurándose de que no excedan los límites mortales.
 
-El sistema actual del `CatalogoArtefactos` es demasiado rígido para manejar estas especialidades. Tu misión es refactorizar el sistema para que pueda colaborar con las distintas **Estrategias de Mejora** sin necesidad de modificar su código interno cada vez que un nuevo artesano se una a la causa.
+El sistema actual del `CatalogoArtefactos` es demasiado rígido para manejar estas especialidades.
+Tu misión es refactorizar el sistema para que pueda colaborar con las distintas **Estrategias de Mejora**
+sin necesidad de modificar su código interno cada vez que un nuevo artesano se una a la causa. Para ello, 
+te valeras de la antigua sabiduria conocida como **Principio de Inversión de Dependencias (DIP)**.
+
+---
 
 # Objetivo del Laboratorio
 
-1. Aplicar el Principio de **Inversión de Control** para desacoplar el `CatalogoArtefactos` de la lógica concreta de mejora.
-2. Implementar el patrón de **Inyección de Dependencias** por constructor para proporcionar al catálogo su estrategia de mejora.
-3. Utilizar interfaces y polimorfismo para crear un sistema flexible y extensible de mejoras de artefactos.
-4. Validar la solución utilizando los tests de `JUnit` provistos, que ahora verificarán tanto el funcionamiento del catálogo como la correcta aplicación de las mejoras.
+1. Aplicar **Inversión de Control (IoC)** desacoplando la clase cliente de sus colaboradores concretos.
+2. Implementar **Inyección de Dependencias por Constructor** garantizando inmutabilidad y estado consistente.
+3. Utilizar **interfaces y polimorfismo** para lograr extensibilidad sin modificar código existente.
+4. Experimentar la **testabilidad con dobles de prueba (Mocks)** en JUnit 5.
+5. Practicar **Pair Programming profesional** con el protocolo Driver/Navigator y rotación de roles.
 
-# Enunciado
+---
 
-Debes refactorizar y agregar las clases necesarias para manejar los nuevos requisitos.
+# Consigna de Trabajo: Estructura "Core + Challenge"
 
-1.  **Crear la Abstracción (El Contrato):**
-    *   Define una nueva interfaz llamada `EstrategiaDeMejora`.
-    *   Esta interfaz debe tener un único método: `void mejorar(Artefacto artefacto)`.
+## Fase 1: El Núcleo Obligatorio (Core - 60 min)
 
-2.  **Crear las Implementaciones Concretas (Los Especialistas):**
-    *   Implementa una clase `ForjadorDeRunas` que aplique la interfaz `EstrategiaDeMejora`. Su lógica de `mejorar` será: si el artefacto es de tipo "Varita", incrementa su poder en 15 puntos.
-    *   Implementa una clase `JoyeroElfico` que también aplique `EstrategiaDeMejora`. Su lógica será: si el artefacto es de tipo "Amuleto", y su poder es menor a 50, duplica su poder. Si es mayor o igual a 50, lo incrementa en un 25%.
-    *   Implementa una clase `EscribaArcano` que aplique `EstrategiaDeMejora`. Su lógica de `mejorar` es arriesgada: si el artefacto es de tipo "Pergamino" y su poder es menor a 30, incrementa su poder en 25. Si su poder es 30 o más, el encantamiento es inestable y pierde 10 puntos de poder.
-    *   Implementa una clase `AlquimistaExperto` que aplique `EstrategiaDeMejora`. Su lógica de `mejorar` es cuidadosa: si el artefacto es de tipo "Poción", incrementa su poder en 20 puntos, pero **sin que el nivel de poder final supere los 100**. (Ej: si una poción tiene 85 de poder, su nuevo poder será 100, no 105).
+1. **Definir el Contrato (`EstrategiaDeMejora`):**
+    * Crear la interfaz `ar.edu.unlu.poo.labo2.estrategias.EstrategiaDeMejora` con el método:
+      ```java
+      void mejorar(Artefacto artefacto);
+      ```
 
-3.  **Refactorizar `CatalogoArtefactos` (El Cliente):**
-    *   Modifica la clase `CatalogoArtefactos` para que reciba en su constructor un objeto de tipo `EstrategiaDeMejora`.
-    *   Almacena esta estrategia en un campo privado. El catálogo ya no debe crear, conocer ni depender de ninguna clase de mejora concreta.
-    *   Añade un nuevo método público al catálogo: `void aplicarMejoras()`. Este método debe recorrer **todos** los artefactos del catálogo y aplicarles la estrategia de mejora que recibió en el constructor.
+2. **Refactorizar el Cliente (`CatalogoArtefactos`):**
+    * Incorporar un constructor que reciba e inyecte una `EstrategiaDeMejora`:
+      ```java
+      public CatalogoArtefactos(EstrategiaDeMejora estrategia)
+      ```
+    * Mantener el constructor por defecto `public CatalogoArtefactos()` para preservar la compatibilidad con el Laboratorio 1.
+    * Implementar el método de negocio:
+      ```java
+      public void aplicarMejoras()
+      ```
+      Debe recorrer todos los artefactos del catálogo y delegar la mejora en la estrategia inyectada.
 
-4.  **Validar con Pruebas:**
-    *   El repositorio incluye un archivo `CatalogoMejoradoTest.java` con tests que están diseñados para fallar al principio.
-    *   Estos tests crearán instancias del `CatalogoArtefactos` inyectándole las diferentes estrategias (`ForjadorDeRunas`, `JoyeroElfico`) y verificarán que los artefactos se modifican correctamente después de llamar a `aplicarMejoras()`.
-    *   Tu objetivo es escribir el código necesario para que todos los tests pasen a verde.
+3. **Implementar los Especialistas Base:**
+    * `ForjadorDeRunas`: si el artefacto es de tipo `"Varita"`, incrementa su poder en **+15**.
+    * `AlquimistaExperto`: si el artefacto es de tipo `"Poción"`, incrementa su poder en **+20**, con un **tope máximo estricto de 100**.
 
+---
 
-### Restricciones de Tiempo y Forma de Entrega
+## Fase 2: El Desafío Arquitectónico (Challenge - 25 min)
 
-- **Duración**: 2 horas. (Hasta las 21 Hs)
-- **Entrega**: Al finalizar la clase, debe realizar un *Pull Request* al repositorio oficial *forkeado* originalmente.
+* **El Concilio de Artesanos (`EstrategiaCompuesta`):**
+    * Para las pruebas finales del torneo, un artefacto debe ser mejorado por múltiples artesanos secuencialmente en una sola pasada.
+    * Implementar la clase `EstrategiaCompuesta` (patrón estructural *Composite*) que implemente `EstrategiaDeMejora` y reciba en su constructor una lista o varargs de estrategias:
+      ```java
+      public EstrategiaCompuesta(EstrategiaDeMejora... estrategias)
+      ```
+      (tip: googlear `varargs java` y ver usos)
+    * Al llamar a `mejorar(artefacto)`, debe aplicar cada estrategia contenida sobre el artefacto.
+    * *Observación clave:* `CatalogoArtefactos` no debe cambiar en absoluto.
+
+---
+
+## Fase 3: Extensión Opcional (Bonus)
+Si tu grupo completó las Fases 1 y 2 antes del tiempo límite, implementar:
+* `JoyeroElfico`: si es `"Amuleto"`, duplica el poder si es $<50$, o incrementa un 25% si es $\ge 50$.
+* `EscribaArcano`: si es `"Pergamino"`, suma $+25$ si poder $<30$, o resta $-10$ si es $\ge 30$ (inestabilidad mágica).
+
+---
+
+## Metodología de Trabajo en el Aula
+
+1. **Pair Programming (Driver / Navigator):**
+   * Una sola computadora por dupla.
+   * **Minuto 0 a 45:** Estudiante A programa (Driver), Estudiante B supervisa y revisa tests (Navigator).
+   * **Minuto 45:** **Rotación optativa (docente avisará el momento).** Estudiante B toma el teclado para implementar las estrategias y el desafío composite.
+2. **Ciclo TDD:**
+   * Ejecutar los tests en rojo (*Red*).
+   * Escribir el código mínimo para pasar a verde (*Green*).
+   * Refactorizar.
+   * **Regla estricta:** No modificar los tests provistos.
+3. **Entrega Formal (Últimos 15 min):**
+   * Commit + Push a tu fork de GitHub.
+   * Abrir un Pull Request al repositorio de la asignatura antes de las 21:00 hs.
