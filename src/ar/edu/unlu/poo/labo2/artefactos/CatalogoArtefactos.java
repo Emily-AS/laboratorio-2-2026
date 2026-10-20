@@ -1,5 +1,7 @@
 package ar.edu.unlu.poo.labo2.artefactos;
 
+import ar.edu.unlu.poo.labo2.estrategias.EstrategiaDeMejora;
+
 import java.util.*;
 
 public class CatalogoArtefactos {
@@ -10,6 +12,14 @@ public class CatalogoArtefactos {
     public CatalogoArtefactos() {
         this.artefactos = new HashSet<>();
     }
+
+    public CatalogoArtefactos(EstrategiaDeMejora estrategia) {
+        this.artefactos = new HashSet<>();
+
+        aplicarMejoras();
+    }
+
+
 
     // =========================================================================
     // Métodos del Laboratorio 1 (Colecciones)
@@ -56,5 +66,28 @@ public class CatalogoArtefactos {
             }
         }
         return max;
+    }
+
+    public void aplicarMejoras() {
+        for (Artefacto a : this.artefactos) {
+            if (estrategia){
+
+            }
+            if (a.esDeTipo("Varita")) {
+                ForjadorDeRunas forjador = new ForjadorDeRunas();
+                forjador.mejorar(a);
+            }
+            else if (a.esDeTipo("Poción")) {
+                AlquimistaExperto alquimistaExperto = new AlquimistaExperto();
+                alquimistaExperto.mejorar(a);
+            } else if (a.esDeTipo("Amuleto")) {
+                JoyeroElfico joyeroElfico = new JoyeroElfico();
+                joyeroElfico.mejorar(a);
+            } else if (a.esDeTipo("Pergamino")) {
+               EscribaArcano escribaArcano = new EscribaArcano();
+               escribaArcano.mejorar(a);
+            }
+        }
+
     }
 }
